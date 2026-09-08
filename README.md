@@ -1,358 +1,383 @@
-# 📊 User Engagement & Churn Analysis
+# Mobile App User Engagement & Churn Analysis
 
-## 📌 Project Overview
+A complete Data Analytics portfolio project focused on understanding mobile-app engagement, subscription mix, churn-risk profiling, product usage, and retention opportunities.
 
-This project analyzes user engagement, subscription behavior, app usage, and churn risk using a dataset of **20,000 users**.
+The project combines **Python/Pandas analysis, SQL business analysis, and a professional business report** using the supplied mobile-app engagement dataset.
 
-The objective is to understand how users interact with the application, identify differences across user segments, and uncover patterns that may help improve **user retention, engagement, and subscription conversion**.
+## Project Overview
 
-The analysis was performed using Python with a focus on exploratory data analysis (EDA), statistical summaries, and data visualization.
+The analysis explores:
 
----
-
-## 🎯 Business Objectives
-
-The project aims to answer questions such as:
-
-- How actively are users engaging with the application?
-- How does engagement vary across age groups and countries?
-- Which subscription types have the highest user share?
-- How is churn risk distributed among Free, Trial, and Premium users?
-- Which app versions have the largest user base?
-- How do Android and iOS users compare in session duration?
-- How have monthly user logins changed over time?
-- How frequently do users interact with push notifications?
-- What does the user rating distribution look like?
-
----
-
-## 📂 Dataset
-
-The dataset contains **20,000 users** with information related to:
-
-- User engagement
-- Session activity
-- App usage
-- Subscription type
-- Churn risk
-- User ratings
-- Device type
-- Country
-- Age group
-- App version
-- Push notification interactions
+- User engagement and session behavior
+- Subscription distribution across Free, Trial, and Premium
+- Churn Risk Score profiling
+- Behavioral retention segmentation
+- Age and country-level engagement
+- Device and app-version performance
+- Push-notification interactions
 - Monthly login activity
+- User satisfaction and ratings
+- Correlations between engagement variables and churn risk
+- Repeatable SQL business queries for future BI reporting
 
-### Key Variables
+> **Important:** The dataset contains a Churn Risk Score, but it does not contain an observed churn/cancellation outcome. Therefore, this project performs **churn-risk profiling**, not measured churn-rate analysis.
 
-| Variable | Description |
+## Dataset
+
+The supplied CSV contains:
+
+- **20,000 records**
+- **15 source fields**
+- Login dates from **01 January 2023 to 01 June 2025**
+- No missing values across the source fields
+
+The raw file contains **2,000 distinct User IDs across 20,000 records**. Because of this, record-level counts should not automatically be interpreted as unique users.
+
+### Main Fields
+
+| Category | Fields |
 |---|---|
-| Session Duration | Time spent during user sessions |
-| Screens Viewed | Number of screens viewed |
-| In-App Purchases | Number/value of in-app purchases |
-| Engagement Score | Overall user engagement score |
-| Churn Risk Score | Estimated probability/risk of user churn |
-| Rating | User rating from 1 to 5 |
-| Subscription Type | Free, Trial, or Premium |
-| Age Group | User age category |
-| Country | User's country |
-| App Version | Version of the application used |
-| Device Type | Android or iOS |
-| Push Notifications Clicked | Number of push notifications interacted with |
-| Monthly Logins | Number of users logging in each month |
+| User | User ID, Gender, Age |
+| Geography & Platform | Country, Device Type, App Version |
+| Engagement | Sessions Per Day, Avg Session Duration Min, Screens Viewed |
+| Messaging | Push Notifications Clicked |
+| Monetization | In App Purchases, Subscription Status |
+| Risk & Satisfaction | Churn Risk Score, User Rating |
+| Time | Last Login Date |
 
----
+## Engagement Score
 
-## 🛠️ Tools & Technologies
+The project uses the Engagement Score defined in the supplied Python analysis:
+
+```text
+Engagement Score =
+    (Sessions Per Day × Avg Session Duration Min)
+    + (Screens Viewed × 0.5)
+    + (In App Purchases × 2)
+```
+
+This is a custom composite index designed for relative comparison and segmentation within this dataset. It should not be treated as a standard industry metric.
+
+## Key Findings
+
+### Overall Engagement
+
+| Metric | Result |
+|---|---:|
+| Records | 20,000 |
+| Distinct User IDs | 2,000 |
+| Avg Sessions/Day | 7.47 |
+| Avg Session Duration | 30.45 min |
+| Avg Screens Viewed | 26.99 |
+| Avg Push Notification Clicks | 4.46 |
+| Avg In-App Purchases | 2.00 |
+| Avg Engagement Score | 245.54 |
+| Avg Churn Risk Score | 0.497 |
+| Avg User Rating | 2.99 / 5 |
+
+### Subscription Mix
+
+- **Premium:** 6,767 records, 33.8%
+- **Free:** 6,653 records, 33.3%
+- **Trial:** 6,580 records, 32.9%
+
+The subscription base is highly balanced.
+
+### Churn Risk
+
+Average Churn Risk Score is almost identical across subscription groups:
+
+- Free: **0.499**
+- Trial: **0.493**
+- Premium: **0.499**
+
+This suggests that subscription status alone does not meaningfully separate the supplied risk score.
+
+### Behavioral Segmentation
+
+A stronger retention strategy is to combine:
+
+- Churn Risk Score
+- Engagement Score
+
+This creates four practical groups:
+
+1. High Risk + Low Engagement
+2. High Risk + High Engagement
+3. Low Risk + Low Engagement
+4. Low Risk + High Engagement
+
+The **High Risk + Low Engagement** group is the clearest candidate for targeted retention experiments.
+
+### Age
+
+The highest average session frequency is observed in the **35–44** age group at **7.60 sessions/day**.
+
+The lowest is the **45–54** group at **7.37 sessions/day**.
+
+The overall difference is small, so age does not appear to be a strong differentiator of session frequency in this dataset.
+
+### Geography
+
+The USA has the highest average session frequency at **7.53 sessions/day**, while the UK is lowest at **7.43**.
+
+The difference is only **0.10 sessions/day**, indicating limited geographic variation.
+
+### Device
+
+Average session duration is:
+
+- Android: **30.57 minutes**
+- iOS: **30.33 minutes**
+
+The difference is only **0.24 minutes**, suggesting broadly similar session depth across platforms.
+
+### App Version
+
+Version **1.2** has the largest record count at **4,084**, followed by version **2.1** at **4,075**.
+
+App adoption alone is not enough to evaluate release performance. Engagement, ratings, and risk should also be compared across versions.
+
+### Monthly Activity
+
+Monthly login activity is broadly stable across most full months.
+
+The highest monthly record count is **742 in October 2023**.
+
+The final observed month, **June 2025**, contains only **20 records** and may represent a partial data extract or reporting cutoff. It should not be interpreted as a genuine collapse in product usage without further validation.
+
+## Correlation Analysis
+
+The measured behavioral variables have almost no linear correlation with the supplied Churn Risk Score.
+
+| Variable | Correlation with Churn Risk |
+|---|---:|
+| Engagement Score | -0.004 |
+| In App Purchases | -0.004 |
+| Sessions Per Day | -0.002 |
+| Avg Session Duration Min | -0.001 |
+| User Rating | 0.001 |
+| Push Notifications Clicked | 0.004 |
+| Screens Viewed | 0.008 |
+
+The largest absolute correlation is **Screens Viewed at 0.008**, which is negligible in linear terms.
+
+This does not by itself prove that the risk score is invalid. A real validation requires observed outcomes such as inactivity, cancellation, downgrade, or renewal behavior.
+
+## SQL Analysis Layer
+
+The project includes a **MySQL 8+ SQL analysis layer**.
+
+The SQL file contains:
+
+- Database and raw table creation
+- CSV import instructions
+- Data-quality checks
+- An analytics view
+- Engagement Score calculation
+- Age Group calculation
+- Login Month calculation
+- KPI queries
+- Subscription analysis
+- Churn-risk analysis
+- Behavioral segmentation
+- Country analysis
+- Device analysis
+- App-version analysis
+- Push-notification analysis
+- Monthly login trends
+- Dashboard-ready summary queries
+
+### Main SQL View
+
+```text
+vw_user_engagement_analysis
+```
+
+This view adds:
+
+- `age_group`
+- `login_month`
+- `engagement_score`
+
+to the original source fields.
+
+
+## Tools & Technologies
 
 - **Python**
 - **Pandas**
 - **NumPy**
 - **Matplotlib**
-- **Seaborn**
 - **Jupyter Notebook**
+- **MySQL 8+**
+- **SQL**
+- **Power BI-ready analytical outputs**
+- **PDF / Word reporting**
 
----
+## How to Run the Python Analysis
 
-# 🔍 Exploratory Data Analysis
-
-## 1. User Engagement Metrics
-
-The project analyzes several important engagement metrics:
-
-- Average session duration
-- Screens viewed
-- In-app purchases
-- Engagement score
-- Churn risk score
-- User ratings
-
-These distributions help understand how users interact with the application and how engagement varies across the user base.
-
----
-
-## 2. Monthly User Logins
-
-Monthly login activity was analyzed from **January 2023 to June 2025**.
-
-The number of monthly logins generally remains within the **600–750 range**, showing relatively stable user activity throughout most of the period.
-
-### Key observations
-
-- Highest recorded monthly login count: **742**
-- Lowest full-month count: **625**
-- User activity remained relatively stable throughout 2023 and 2024.
-- Login activity peaked around late 2023 and remained strong during much of 2024.
-- June 2025 shows only **20 logins**, which may indicate an incomplete month or partial data.
-
-This type of analysis can help identify seasonal patterns and potential changes in user retention.
-
----
-
-## 3. Subscription Distribution
-
-Users are divided into three subscription categories:
-
-| Subscription Type | Approx. Share |
-|---|---:|
-| Premium | 33.8% |
-| Free | 33.3% |
-| Trial | 32.9% |
-
-The distribution is remarkably balanced, with each subscription category representing approximately one-third of the user base.
-
-### Insight
-
-The relatively large Trial segment presents an opportunity to analyze **trial-to-paid conversion** and identify factors that influence users to upgrade to Premium.
-
----
-
-## 4. Average Sessions by Age Group
-
-Average daily sessions were compared across age groups.
-
-| Age Group | Avg. Sessions/Day |
-|---|---:|
-| <18 | 7.50 |
-| 18–24 | 7.51 |
-| 25–34 | 7.40 |
-| 35–44 | 7.60 |
-| 45–54 | 7.37 |
-| 55–64 | 7.48 |
-| 65+ | Data not prominently represented |
-
-### Key Insight
-
-Engagement is fairly consistent across age groups, with users aged **35–44 showing the highest average session frequency at approximately 7.60 sessions per day** among the displayed groups.
-
-This suggests that age alone may not be a major differentiator of engagement.
-
----
-
-## 5. Average Sessions by Country
-
-User engagement was also compared across countries.
-
-| Country | Avg. Sessions/Day |
-|---|---:|
-| USA | 7.53 |
-| Brazil | 7.51 |
-| Germany | 7.48 |
-| Australia | 7.46 |
-| Canada | 7.45 |
-| India | 7.45 |
-| UK | 7.43 |
-
-### Key Insight
-
-Average sessions per day are very similar across countries, ranging from approximately **7.43 to 7.53**.
-
-The USA has the highest average session frequency among the displayed countries.
-
----
-
-## 6. Churn Risk by Subscription Type
-
-The distribution of churn risk scores was analyzed for:
-
-- Free users
-- Trial users
-- Premium users
-
-The violin plot shows that churn risk is distributed across a wide range for all three subscription types.
-
-### Key Insight
-
-All subscription categories show users with both low and high churn risk.
-
-This indicates that **subscription type alone is not enough to identify users likely to churn**. Combining churn risk with engagement metrics, session activity, purchases, and other behavioral features could provide stronger insights.
-
----
-
-## 7. Push Notification Engagement
-
-The project analyzes the number of push notifications clicked by users.
-
-Users interacted with between **0 and 9 push notifications** in the displayed distribution.
-
-The number of users in each category remains relatively consistent, with approximately **1,900–2,100 users** per category.
-
-### Insight
-
-Push notification interaction is fairly evenly distributed, suggesting that notification engagement is not concentrated in only a small subset of users.
-
-Further analysis could investigate whether users who click more notifications also have:
-
-- Higher engagement scores
-- Longer sessions
-- Lower churn risk
-- More purchases
-
----
-
-## 8. App Version Distribution
-
-The user base was also analyzed by application version.
-
-| App Version | Users |
-|---|---:|
-| 1.0 | 3,926 |
-| 1.1 | 3,980 |
-| 1.2 | 4,084 |
-| 2.0 | 3,935 |
-| 2.1 | 4,075 |
-
-### Key Insight
-
-Version **1.2** has the largest user base with **4,084 users**, closely followed by version **2.1** with **4,075 users**.
-
-The relatively even distribution across versions suggests that users are spread fairly consistently across the available application releases.
-
----
-
-## 9. Session Duration by Device
-
-Average session duration was compared between Android and iOS users.
-
-| Device | Avg. Session Duration |
-|---|---:|
-| Android | 30.57 minutes |
-| iOS | 30.33 minutes |
-
-### Key Insight
-
-Android users have a slightly higher average session duration than iOS users.
-
-However, the difference is very small, suggesting that **device type has limited impact on session duration** in this dataset.
-
----
-
-## 10. User Ratings
-
-The distribution of user ratings from **1 to 5** was analyzed.
-
-The ratings are distributed across the full scale, with the largest concentration around the higher rating values.
-
-A rating of **3** has the highest displayed frequency, followed by ratings around **4–5**.
-
-This provides an opportunity to investigate whether user satisfaction is associated with engagement, subscription status, or churn risk.
-
----
-
-# 📈 Key Business Insights
-
-Based on the analysis:
-
-### 1. Engagement is relatively stable
-
-Average sessions per day remain close to **7.4–7.6** across different age groups and countries.
-
-### 2. Subscription distribution is balanced
-
-Free, Trial, and Premium users each represent roughly one-third of the user base.
-
-### 3. Churn risk varies within every subscription group
-
-Both Free and Premium users can have high churn-risk scores, meaning retention strategies should be based on **behavior rather than subscription type alone**.
-
-### 4. User activity is relatively stable
-
-Monthly logins remain mostly within the **600–750 range** across the observed period, excluding the unusually low June 2025 value.
-
-### 5. Device engagement is almost identical
-
-Android and iOS users have very similar average session durations:
-
-- Android: **30.57 minutes**
-- iOS: **30.33 minutes**
-
-### 6. Geographic differences are small
-
-The difference in average daily sessions between the highest and lowest displayed countries is only around **0.10 sessions per day**.
-
-### 7. App versions have similar adoption
-
-No single app version dominates the user base, although versions **1.2 and 2.1** have the largest user counts.
-
----
-
-# 📊 Visualizations
-
-The project includes visualizations for:
-
-- User engagement metric distributions
-- Monthly user logins
-- Push notification interactions
-- Subscription type distribution
-- Average sessions by age group
-- Churn risk by subscription type
-- Average sessions by country
-- User count by app version
-- Average session duration by device type
-- User rating distribution
-
-These visualizations make it easier to identify trends, differences between user segments, and potential areas for further investigation.
-
----
-
-# 💡 Potential Business Recommendations
-
-Based on the exploratory analysis, several areas could be investigated further:
-
-### Improve Trial Conversion
-
-Since Trial users represent roughly one-third of the user base, analyzing their behavior before and after the trial period could help identify opportunities to increase Premium conversions.
-
-### Target High-Risk Users
-
-Instead of applying the same retention strategy to everyone, users with high churn-risk scores could be segmented based on engagement and purchase behavior.
-
-### Analyze Notification Effectiveness
-
-Push notification clicks could be compared with engagement and churn metrics to determine whether notifications are actually improving retention.
-
-### Investigate User Satisfaction
-
-Ratings could be analyzed against churn risk, subscription type, and session duration to understand whether satisfaction influences retention.
-
-### Monitor New App Versions
-
-Tracking engagement and churn by app version could help determine whether newer releases improve the user experience.
-
----
-
-# 📁 Project Structure
+1. Open the notebook:
 
 ```text
-User-Engagement-Churn-Analysis/
-│
-├── User_Engagement_Analysis.ipynb
-├── dataset.csv
-├── visualizations/
-│   ├── engagement_metrics.png
-│   ├── monthly_logins.png
-│   ├── subscription_distribution.png
-│   ├── churn_risk.png
-│   └── ...
-│
-└── README.md
+Mobile App User Engagement(1).ipynb
+```
+
+2. Place the CSV in the same working directory or update the notebook's file path.
+
+3. Run the notebook cells from top to bottom.
+
+4. The notebook performs data loading, validation, derived metric creation, grouped analysis, and visualization.
+
+## How to Run the SQL Analysis
+
+### 1. Open MySQL Workbench
+
+Use MySQL 8+.
+
+### 2. Open
+
+```text
+mobile_app_user_engagement_analysis.sql
+```
+
+### 3. Update the CSV path
+
+The SQL file contains a `LOAD DATA LOCAL INFILE` statement.
+
+Update the file path to wherever the CSV is stored.
+
+### 4. Run the script
+
+The script creates:
+
+```text
+mobile_app_analytics
+```
+
+and the source table:
+
+```text
+mobile_app_user_engagement
+```
+
+It then creates:
+
+```text
+vw_user_engagement_analysis
+```
+
+for repeatable analysis.
+
+### 5. Run the business queries
+
+The SQL file includes separate queries for KPIs, subscription, churn risk, segmentation, product usage, time trends, and dashboard extracts.
+
+## Business Recommendations
+
+### 1. Prioritize High Risk + Low Engagement
+
+Use the behavioral segment to identify users who are both relatively disengaged and have elevated supplied risk.
+
+Potential interventions:
+
+- Re-engagement campaigns
+- Product education
+- Personalized messaging
+- Incentive testing
+
+### 2. Improve Trial-to-Premium Analysis
+
+Trial users represent approximately one-third of the source records.
+
+Actual Trial-to-Premium conversion cannot be calculated from the current data because conversion history is not available.
+
+Add trial start, trial end, conversion, and subscription-event data in the next version.
+
+### 3. Validate the Churn Risk Score
+
+Connect the supplied risk score to actual downstream outcomes.
+
+Potential validation metrics include:
+
+- AUC
+- Precision
+- Recall
+- Calibration
+- Lift by risk band
+
+### 4. Investigate June 2025
+
+Confirm whether the unusually low number of June 2025 records is caused by:
+
+- Partial extraction
+- Reporting cutoff
+- Missing data
+- A genuine product event
+
+### 5. Monitor App Versions
+
+Compare versions using:
+
+- Engagement
+- Ratings
+- Session duration
+- Churn-risk distribution
+
+rather than adoption alone.
+
+### 6. Test Push Notifications
+
+Measure whether notification exposure produces higher subsequent engagement or retention.
+
+The current dataset supports descriptive analysis but not causal effectiveness measurement.
+
+### 7. Build a Power BI Dashboard
+
+Recommended dashboard slicers:
+
+- Country
+- Device Type
+- Subscription Status
+- Age Group
+- App Version
+
+The SQL analytics view can serve as a repeatable source for the dashboard.
+
+## Limitations
+
+The current project has several important limitations:
+
+- No observed churn/cancellation label
+- Custom Engagement Score weights are not business-outcome validated
+- Monthly login counts are record counts, not guaranteed unique active users
+- June 2025 may be a partial period
+- Descriptive comparisons do not establish causality
+- No cohort retention data
+- No Trial-to-Premium event history
+- No revenue or lifetime-value data
+- Repeated User IDs mean record-level counts must be interpreted carefully
+
+## Future Improvements
+
+The next version of the project can add:
+
+1. Actual churn or inactivity labels
+2. Monthly Active Users using distinct User IDs
+3. Retention cohorts
+4. Trial-to-Premium conversion analysis
+5. Revenue and Lifetime Value analysis
+6. Risk-score validation against real outcomes
+7. Predictive churn modeling
+8. Power BI dashboard
+9. Controlled retention experiments
+10. Notification effectiveness testing
+
+## Final Takeaway
+
+The analysis shows a broadly consistent mobile-app engagement profile across major demographic, geographic, device, and subscription segments.
+
+The most important finding is that **subscription status alone does not meaningfully distinguish the supplied churn-risk score**. A more useful approach is to combine risk and behavioral engagement to identify targeted retention segments.
+
+
+
